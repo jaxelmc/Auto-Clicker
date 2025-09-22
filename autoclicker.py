@@ -107,6 +107,13 @@ class MainProgram():
             self.current_mouse_position = self.mousex,"x",self.mousey
             self.click_cords_tb.delete("0.0", "end")
             self.click_cords_tb.insert("0.0",self.current_mouse_position)
+    
+    #Set Keybind
+    def set_keybind_fun(self):
+        self.keybind_btn.configure(fg_color="#144870")
+        self.keybind=keyboard.read_hotkey()
+        self.keybind_btn.configure(fg_color=self.start_stop_btn.cget("fg_color"))
+        print("Hello World")
 
 
     #Don't let clicks at cords if cords not choosen
@@ -144,13 +151,6 @@ class MainProgram():
     def amount_tb_text_replace_fun(self,event):
          if event.keysym not in {'BackSpace', 'Delete'} and not event.char.isdigit():
           return 'break'
-    
-    #Set Keybind
-    def set_keybind_fun(self):
-        self.keybind_btn.configure(fg_color="#144870")
-        self.keybind=keyboard.read_hotkey()
-        self.keybind_btn.configure(fg_color=self.start_stop_btn.cget("fg_color"))
-        print("Hello World")
         
 
     #Run Auto Clicking
