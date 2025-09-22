@@ -150,7 +150,7 @@ class MainProgram():
         self.keybind_btn.configure(fg_color="#144870")
         self.keybind=keyboard.read_hotkey()
         self.keybind_btn.configure(fg_color=self.start_stop_btn.cget("fg_color"))
-        
+        print("Hello World")
         
 
     #Run Auto Clicking
