@@ -87,6 +87,7 @@ class MainProgram():
         self.click_cords_tb.grid(row=0, column=2, padx=5)
         self.click_cords_tb.insert("0.0", "'X' Set Cords")
         #Start Stop Button
+        #Change program status and Start/Stop button background color
         self.start_stop_btn = customtkinter.CTkButton(self.bottom_f, text="Start/Stop", font=("Helvetica", 15), corner_radius=4, command=self.click, height=35)
         self.start_stop_btn.grid(row=0, column=3, sticky='nsew', padx=(10, 0))
         self.start_stop_btn.bind('<Enter>', self.start_stop_hover_fun)
@@ -94,26 +95,26 @@ class MainProgram():
         self.program_stat_tb = customtkinter.CTkTextbox(self.bottom_f, state="disabled", width=5, height= 1,border_spacing=0, corner_radius=11, bg_color=self.start_stop_btn.cget("fg_color"), font=("Helvetica", 1), fg_color="#a10202", border_color="black", border_width=2)
         self.program_stat_tb.grid(row=0, column=3, sticky='e', padx=(0, 2))
         
-
         self.root.mainloop()
-    
+
     #----------------------------------------------------------------------------------------------------
 
 
     #Get Mouse Coordinates
     def get_mouse_cords_fun(self):
-            keyboard.wait('x')
-            self.mousex, self.mousey = pyautogui.position()
-            self.current_mouse_position = self.mousex,"x",self.mousey
-            self.click_cords_tb.delete("0.0", "end")
-            self.click_cords_tb.insert("0.0",self.current_mouse_position)
+        while True:
+            if keyboard.is_pressed('x'):
+                self.mousex, self.mousey = pyautogui.position()
+                self.current_mouse_position = self.mousex,"x",self.mousey
+                self.click_cords_tb.delete("0.0", "end")
+                self.click_cords_tb.insert("0.0",self.current_mouse_position)
+                break
     
     #Set Keybind
     def set_keybind_fun(self):
         self.keybind_btn.configure(fg_color="#144870")
         self.keybind=keyboard.read_hotkey()
         self.keybind_btn.configure(fg_color=self.start_stop_btn.cget("fg_color"))
-        print("Hello World")
 
 
     #Don't let clicks at cords if cords not choosen
