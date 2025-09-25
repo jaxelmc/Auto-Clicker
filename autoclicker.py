@@ -3,7 +3,7 @@ import os
 import tkinter as tk
 import pyautogui
 import keyboard
-import threading
+import time
 from tkinter import messagebox
 os.system('cls')
 
@@ -30,18 +30,21 @@ class MainProgram():
         #Minute
         self.min_tb = customtkinter.CTkTextbox(self.delay_f, width=100, height= 15, font=("Helvetica", 20), border_spacing=0, corner_radius=1, border_width=1, activate_scrollbars=False)
         self.min_tb.grid(row=0, column=0, sticky='e')
+        self.min_tb.insert("0.0", 0)
         self.min_tb.bind('<KeyPress>', lambda event: self.number_limit_fun(event, self.min_tb))
         self.min_lb = customtkinter.CTkLabel(self.delay_f, text="Minute", fg_color="transparent",padx=10 )
         self.min_lb.grid(row=0, column=1, sticky='w')
         #Seconds
         self.sec_tb = customtkinter.CTkTextbox(self.delay_f, width=100, height= 15, font=("Helvetica", 20), border_spacing=0, corner_radius=1, border_width=1, activate_scrollbars=False)
         self.sec_tb.grid(row=0, column=2, sticky='e')
+        self.sec_tb.insert("0.0", 0)
         self.sec_tb.bind('<KeyPress>', lambda event: self.number_limit_fun(event, self.sec_tb))
         self.sec_lb = customtkinter.CTkLabel(self.delay_f, text="Second", fg_color="transparent",padx=10 )
         self.sec_lb.grid(row=0, column=3, sticky='w')
         #Mili Seconds
         self.milis_tb = customtkinter.CTkTextbox(self.delay_f, width=100, height= 15, font=("Helvetica", 20), border_spacing=0, corner_radius=1, border_width=1, activate_scrollbars=False)
         self.milis_tb.grid(row=0, column=4, sticky='e')
+        self.milis_tb.insert("0.0", 0)
         self.milis_tb.bind('<KeyPress>', lambda event: self.number_limit_fun(event, self.milis_tb))
         self.milis_lb = customtkinter.CTkLabel(self.delay_f, text="Millisecond", fg_color="transparent",padx=10 )
         self.milis_lb.grid(row=0, column=5, sticky='w')
@@ -146,6 +149,9 @@ class MainProgram():
     #Limit the delay boxes to only numbers and 7 digits
     def number_limit_fun(self, event, box):
         count=(len(box.get("0.0", "end").strip("\n")))
+        if count == 1 and event.keysym in {'BackSpace', 'Delete'}:
+            box.insert("0.0", "0")
+            
         if count >= 7 and event.keysym not in {'BackSpace', 'Delete'} or (not event.char.isdigit() and event.keysym not in {'BackSpace', 'Delete'}):
             return 'break'  
     #Limit the click amout text box to only numbers
@@ -156,17 +162,24 @@ class MainProgram():
 
     #Run Auto Clicking
     def click(self):
-         #Check for Start or Stop and Change the Stats color
+         #Check for Start or Stop
          self.program = not self.program
          if self.program == True:
+            #Change the Stats color
              self.program_stat_tb.configure(fg_color="green")
+             #Calculate Delay Times
+             self.min = int(self.min_tb.get("0.0", "end").strip(" \n").replace(" ",""),10)
+             self.sec = int(self.sec_tb.get("0.0", "end").strip(" \n").replace(" ",""),10)
+             self.milis = int(self.milis_tb.get("0.0", "end").strip(" \n").replace(" ",""),10)
+             self.delay_time = self.min+self.sec
+
          else:
              self.program_stat_tb.configure(fg_color="#a10202")
-
-         self.click_amount = (self.click_amount_tb.get("0.0", "end").strip(" \n")).replace(" ","")
-         print("position = ",self.mousex, self.mousey)
-         print(f"times = {self.click_amount}")
-         print(f"Start Stop Keybind: {self.keybind}")
+             self.click_amount = (self.click_amount_tb.get("0.0", "end").strip(" \n")).replace(" ","")
+             print("position = ",self.mousex, self.mousey)
+             print(f"times = {self.click_amount}")
+             print(f"Start Stop Keybind: {self.keybind}")
+             print(f"Time: {self.delay_time}")
 
            
          
