@@ -158,6 +158,13 @@ class MainProgram():
     def amount_tb_text_replace_fun(self,event):
          if event.keysym not in {'BackSpace', 'Delete'} and not event.char.isdigit():
           return 'break'
+         
+    #Delay time calculation
+    def time_calculation(self):
+        self.min = int(self.min_tb.get("0.0", "end").strip(" \n").replace(" ",""),10)
+        self.sec = int(self.sec_tb.get("0.0", "end").strip(" \n").replace(" ",""),10)
+        self.milis = int(self.milis_tb.get("0.0", "end").strip(" \n").replace(" ",""),10)
+        self.delay_time = self.sec+(self.min*60)+(self.milis/1000)
         
 
     #Run Auto Clicking
@@ -167,12 +174,10 @@ class MainProgram():
          if self.program == True:
             #Change the Stats color
              self.program_stat_tb.configure(fg_color="green")
-             #Calculate Delay Times
-             self.min = int(self.min_tb.get("0.0", "end").strip(" \n").replace(" ",""),10)
-             self.sec = int(self.sec_tb.get("0.0", "end").strip(" \n").replace(" ",""),10)
-             self.milis = int(self.milis_tb.get("0.0", "end").strip(" \n").replace(" ",""),10)
-             self.delay_time = self.min+self.sec
+            #Get delay value
+             self.time_calculation()
 
+             
          else:
              self.program_stat_tb.configure(fg_color="#a10202")
              self.click_amount = (self.click_amount_tb.get("0.0", "end").strip(" \n")).replace(" ","")
